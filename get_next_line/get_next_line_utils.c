@@ -6,15 +6,53 @@
 /*   By: loicpapon <loicpapon@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/13 18:21:55 by loicpapon         #+#    #+#             */
-/*   Updated: 2024/11/17 07:53:42 by loicpapon        ###   ########.fr       */
+/*   Updated: 2024/11/17 21:09:57 by loicpapon        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
-char	*ft_strjoin(char const *str, char const *str2);
+char	*ft_strjoin(char const *str, char const *str2)
+{
+	int		i;
+	int		j;
+	char	*nstr;
 
-char	*ft_strchr(const char *str, const char *target);
+	i = 0;
+	nstr = (char *)malloc(ft_strlen(str) + ft_strlen(str2) + 1);
+	if (nstr == 0)
+		return (0);
+	while (str[i])
+	{
+		nstr[i] = str[i];
+		i++;
+	}
+	j = 0;
+	while (str2[j])
+	{
+		nstr[i] = str2[j];
+		j++;
+		i++;
+	}
+	nstr[i] = '\0';
+	return (nstr);
+}
+
+char	*ft_strchr(const char *str, const char *search)
+{
+	int	i;
+
+	i = 0;
+	while (str[i])
+	{
+		if ((unsigned char)str[i] == (unsigned char)search)
+			return (&((char *)str)[i]);
+		i++;
+	}
+	if ((unsigned char)str[i] == (unsigned char)search)
+		return (&((char *)str)[i]);
+	return (NULL);
+}
 
 size_t	ft_strlen(char *str)
 {
