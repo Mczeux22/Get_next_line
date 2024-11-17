@@ -6,7 +6,7 @@
 /*   By: loicpapon <loicpapon@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/13 18:21:58 by loicpapon         #+#    #+#             */
-/*   Updated: 2024/11/17 09:33:27 by loicpapon        ###   ########.fr       */
+/*   Updated: 2024/11/17 22:11:46 by loicpapon        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,14 +75,40 @@ char	*ft_read_file(int fd, char *res)
 	char	*buffer;
 	int		i;
 
-	i = 1;
-	res = ft_calloc(1, 1);
+	if (res == NULL)
+		res = ft_calloc(1, 1);
 	buffer = ft_calloc(BUFFER_SIZE + 1, sizeof(char));
-	
+	if (buffer == NULL)
+		return (NULL);
+	i = 1;
+	while (i > 0)
+	{
+		i = read(fd, buffer, BUFFER_SIZE);
+		if (i == -1)
+		{
+			free (buffer);
+			return (NULL);
+		}
+		buffer[i] = 0;
+		res = ft_memory(res, buffer);
+		if (ft_strchr(buffer, '\n'))
+			break ;
+	}
+	free (buffer);
+	return (res);
 }
+
 char	*get_next_line(int fd)
 {
-	int	i;
+	static char	*buffer;
+	char		*line;
 
-	i = 0;
+	if (fd < 0 || BUFFER_SIZE <= 0 || read(fd, 0, 0) < 0)
+		return (NULL);
+	buffer = ft_read_file(fd, buffer);
+	if (buffer == 0)
+		return (NULL);
+	line = ft_line(buffer);
+	buffer = ft_line(buffer);
+	return (line);
 }
