@@ -6,7 +6,7 @@
 /*   By: loicpapon <loicpapon@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/13 18:21:55 by loicpapon         #+#    #+#             */
-/*   Updated: 2024/11/17 21:09:57 by loicpapon        ###   ########.fr       */
+/*   Updated: 2024/11/18 13:06:28 by loicpapon        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ char	*ft_strjoin(char const *str, char const *str2)
 	return (nstr);
 }
 
-char	*ft_strchr(const char *str, const char *search)
+char	*ft_strchr(const char *str, int search)
 {
 	int	i;
 
@@ -54,7 +54,7 @@ char	*ft_strchr(const char *str, const char *search)
 	return (NULL);
 }
 
-size_t	ft_strlen(char *str)
+size_t	ft_strlen(const char *str)
 {
 	size_t	i;
 
