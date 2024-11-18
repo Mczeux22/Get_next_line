@@ -6,7 +6,7 @@
 /*   By: loicpapon <loicpapon@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/13 18:21:58 by loicpapon         #+#    #+#             */
-/*   Updated: 2024/11/18 14:00:13 by loicpapon        ###   ########.fr       */
+/*   Updated: 2024/11/18 14:19:45 by loicpapon        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,31 +93,21 @@ char	*ft_read_file(int fd, char *res)
 		return (NULL);
 	buffer = ft_calloc(BUFFER_SIZE + 1, sizeof(char));
 	if (!buffer)
-	{
-		free(res);
-		return (NULL);
-	}
-	i = 1;
+		return (free(res), NULL);
+	i = read(fd, buffer, BUFFER_SIZE);
 	while (i > 0)
 	{
-		i = read(fd, buffer, BUFFER_SIZE);
-		if (i == -1)
-		{
-			free(buffer);
-			free(res);
-			return (NULL);
-		}
 		buffer[i] = '\0';
 		res = ft_memory(res, buffer);
 		if (!res)
-		{
-			free(buffer);
-			return (NULL);
-		}
+			return (free(buffer), NULL);
 		if (ft_strchr(buffer, '\n'))
 			break ;
+		i = read(fd, buffer, BUFFER_SIZE);
 	}
-	free (buffer);
+	free(buffer);
+	if (i == -1)
+		return (free(res), NULL);
 	return (res);
 }
 
@@ -128,21 +118,15 @@ char	*get_next_line(int fd)
 
 	if (fd < 0 || BUFFER_SIZE <= 0 || read(fd, 0, 0) < 0)
 	{
-		if (buffer)
-		{
-			free (buffer);
-			buffer = NULL;
-		}
+		free(buffer);
+		buffer = NULL;
 		return (NULL);
 	}
 	buffer = ft_read_file(fd, buffer);
 	if (!buffer)
 	{
-		if (buffer)
-		{
-			free(buffer);
-			buffer = NULL;
-		}
+		free(buffer);
+		buffer = NULL;
 		return (NULL);
 	}
 	line = ft_line(buffer);
