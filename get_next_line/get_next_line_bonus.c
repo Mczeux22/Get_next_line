@@ -5,18 +5,18 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: loicpapon <loicpapon@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/11/18 18:05:35 by loicpapon         #+#    #+#             */
-/*   Updated: 2024/11/18 19:22:03 by loicpapon        ###   ########.fr       */
+/*   Created: 2025/01/24 14:40:21 by loicpapon         #+#    #+#             */
+/*   Updated: 2025/01/24 14:43:12 by loicpapon        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "get_next_line_bonus.h"
+#include "get_next_line.h"
 
-char	*fr_free(char *buffer, char *buf)
+char	*ft_memory(char *buffer, char *buff)
 {
 	char	*temp;
 
-	temp = ft_strjoin(buffer, buf);
+	temp = ft_strjoin(buffer, buff);
 	if (!temp)
 	{
 		free(buffer);
@@ -26,13 +26,14 @@ char	*fr_free(char *buffer, char *buf)
 	return (temp);
 }
 
-char	*ft_next(char *buffer)
+char	*ft_next_line(char *buffer)
 {
 	int		i;
 	int		j;
-	char	*line;
+	char	*tab;
 
 	i = 0;
+	j = 0;
 	while (buffer[i] && buffer[i] != '\n')
 		i++;
 	if (!buffer[i])
@@ -40,88 +41,101 @@ char	*ft_next(char *buffer)
 		free(buffer);
 		return (NULL);
 	}
-	line = ft_calloc((ft_strlen(buffer) - i + 1), sizeof(char));
-	if (!line)
-		return (free(buffer), NULL);
+	tab = ft_calloc(ft_strlen(buffer) - i, sizeof(char));
+	if (!tab)
+	{
+		free(buffer);
+		return (NULL);
+	}
 	i++;
-	j = 0;
 	while (buffer[i])
-		line[j++] = buffer[i++];
-	free(buffer);
-	return (line);
+		tab[j++] = buffer[i++];
+	free (buffer);
+	return (tab);
 }
 
 char	*ft_line(char *buffer)
 {
-	char	*line;
 	int		i;
+	char	*tab;
 
 	i = 0;
-	if (!buffer[i])
+	if (!buffer || !buffer[i])
 		return (NULL);
 	while (buffer[i] && buffer[i] != '\n')
 		i++;
-	line = ft_calloc(i + 2, sizeof(char));
-	if (!line)
+	tab = ft_calloc(i + 2, sizeof(char));
+	if (!tab)
 		return (NULL);
 	i = 0;
 	while (buffer[i] && buffer[i] != '\n')
 	{
-		line[i] = buffer[i];
+		tab[i] = buffer[i];
 		i++;
 	}
 	if (buffer[i] == '\n')
-		line[i++] = '\n';
-	return (line);
+	{
+		tab[i] = '\n';
+		i++;
+	}
+	tab[i] = '\0';
+	return (tab);
 }
 
-char	*read_file(int fd, char *res)
+char	*ft_read_file(int fd, char *res)
 {
 	char	*buffer;
-	int		byte_read;
+	int		i;
 
 	if (!res)
-	{
 		res = ft_calloc(1, 1);
-		if (!res) // Vérifiez si l'allocation échoue
-			return (NULL);
-	}
+	if (!res)
+		return (NULL);
 	buffer = ft_calloc(BUFFER_SIZE + 1, sizeof(char));
-	if (!buffer) // Vérifiez si l'allocation échoue
+	if (!buffer)
 		return (free(res), NULL);
-	byte_read = 1;
-	while (byte_read > 0)
+	i = read(fd, buffer, BUFFER_SIZE);
+	while (i > 0)
 	{
-		byte_read = read(fd, buffer, BUFFER_SIZE);
-		if (byte_read == -1)
-		{
-			free(buffer);
-			free(res);
-			return (NULL);
-		}
-		buffer[byte_read] = 0;
-		res = fr_free(res, buffer);
-		if (!res) // Si fr_free échoue, libérez buffer
+		buffer[i] = '\0';
+		res = ft_memory(res, buffer);
+		if (!res)
 			return (free(buffer), NULL);
 		if (ft_strchr(buffer, '\n'))
-			break;
+			break ;
+		i = read(fd, buffer, BUFFER_SIZE);
 	}
 	free(buffer);
+	if (i == -1)
+		return (free(res), NULL);
 	return (res);
 }
 
 char	*get_next_line(int fd)
 {
-	static char	*buffer[OPEN_MAX];
+	static char	*buffer;
 	char		*line;
 
-	if (fd < 0 || fd >= OPEN_MAX || BUFFER_SIZE <= 0 || read(fd, 0, 0) < 0)
+	if (fd < 0 || BUFFER_SIZE <= 0 || read(fd, 0, 0) < 0)
+	{
+		free(buffer);
+		buffer = NULL;
 		return (NULL);
-	buffer[fd] = read_file(fd, buffer[fd]);
-	if (!buffer[fd]) // Si une erreur s'est produite
+	}
+	buffer = ft_read_file(fd, buffer);
+	if (!buffer)
+	{
+		free(buffer);
+		buffer = NULL;
 		return (NULL);
-	line = ft_line(buffer[fd]);
-	buffer[fd] = ft_next(buffer[fd]);
+	}
+	line = ft_line(buffer);
+	if (!line)
+	{
+		free(buffer);
+		buffer = NULL;
+		return (NULL);
+	}
+	buffer = ft_next_line(buffer);
 	return (line);
 }
-

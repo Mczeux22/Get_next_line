@@ -6,7 +6,7 @@
 /*   By: loicpapon <loicpapon@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/13 18:21:58 by loicpapon         #+#    #+#             */
-/*   Updated: 2025/01/04 16:19:13 by loicpapon        ###   ########.fr       */
+/*   Updated: 2025/01/24 14:58:01 by loicpapon        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -139,82 +139,3 @@ char	*get_next_line(int fd)
 	buffer = ft_next_line(buffer);
 	return (line);
 }
-
-#include <fcntl.h>
-#include <stdio.h>
-#include <unistd.h>
-#include <stdlib.h>
-#include "get_next_line.h"
-
-int	main(void)
-{
-	int		fd;
-	char	*line;
-
-	// Test 1: Lecture d'un fichier standard
-	fd = open("file1.txt", O_RDONLY);
-	if (fd == -1)
-	{
-		perror("Error opening file1.txt");
-		return (1);
-	}
-	while ((line = get_next_line(fd)) != NULL)
-	{
-		printf("Line: %s", line);
-		free(line);  // Ne pas oublier de libérer la mémoire
-	}
-	close(fd);
-
-	// Test 2: Lecture d'un fichier vide
-	fd = open("empty.txt", O_RDONLY);
-	if (fd == -1)
-	{
-		perror("Error opening empty.txt");
-		return (1);
-	}
-	while ((line = get_next_line(fd)) != NULL)
-	{
-		printf("Line: %s", line);
-		free(line);
-	}
-	close(fd);
-
-	// Test 3: Fichier avec une seule ligne
-	fd = open("single_line.txt", O_RDONLY);
-	if (fd == -1)
-	{
-		perror("Error opening single_line.txt");
-		return (1);
-	}
-	while ((line = get_next_line(fd)) != NULL)
-	{
-		printf("Line: %s", line);
-		free(line);
-	}
-	close(fd);
-
-	// Test 4: Fichier avec plusieurs lignes
-	fd = open("multi_line.txt", O_RDONLY);
-	if (fd == -1)
-	{
-		perror("Error opening multi_line.txt");
-		return (1);
-	}
-	while ((line = get_next_line(fd)) != NULL)
-	{
-		printf("Line: %s", line);
-		free(line);
-	}
-	close(fd);
-	// Test 5: Test avec un fichier invalide 
-	// (pour vérifier la gestion des erreurs)
-	fd = open("non_existent_file.txt", O_RDONLY);
-	if (fd == -1)
-	{
-		perror("Error opening non_existent_file.txt");
-	}
-
-	// Terminer proprement
-	return (0);
-}
-
