@@ -6,11 +6,11 @@
 /*   By: loicpapon <loicpapon@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/18 18:05:40 by loicpapon         #+#    #+#             */
-/*   Updated: 2024/11/18 18:06:08 by loicpapon        ###   ########.fr       */
+/*   Updated: 2024/11/18 19:12:58 by loicpapon        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "get_next_line.h"
+#include "get_next_line_bonus.h"
 
 char	*ft_strjoin(char const *str, char const *str2)
 {

@@ -6,7 +6,7 @@
 /*   By: loicpapon <loicpapon@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/13 18:22:00 by loicpapon         #+#    #+#             */
-/*   Updated: 2024/11/18 13:29:41 by loicpapon        ###   ########.fr       */
+/*   Updated: 2025/01/04 15:56:01 by loicpapon        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,11 @@
 # include <stdlib.h>
 # include <unistd.h>
 # include <string.h>
+
+# ifndef BUFFER_SIZE
+#  define BUFFER_SIZE 42
+
+# endif
 
 char	*get_next_line(int fd);
 char	*ft_strjoin(char const *str, char const *str2);

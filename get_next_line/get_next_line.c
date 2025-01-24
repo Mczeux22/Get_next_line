@@ -6,7 +6,7 @@
 /*   By: loicpapon <loicpapon@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/13 18:21:58 by loicpapon         #+#    #+#             */
-/*   Updated: 2024/11/18 14:40:34 by loicpapon        ###   ########.fr       */
+/*   Updated: 2025/01/04 16:19:13 by loicpapon        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -139,7 +139,7 @@ char	*get_next_line(int fd)
 	buffer = ft_next_line(buffer);
 	return (line);
 }
-/*
+
 #include <fcntl.h>
 #include <stdio.h>
 #include <unistd.h>
@@ -217,4 +217,4 @@ int	main(void)
 	// Terminer proprement
 	return (0);
 }
-*/
+
